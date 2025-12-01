@@ -18,12 +18,12 @@ The core objective of this project was to provide a rigorous statistical evaluat
 * **Deliverables:** SQL Query file, Tableau/BI Dashboard link (or screenshot), and A/B Test Card (Summary).
 
 ## Project Workflow
-1.  **Data Extraction (SQL):** Wrote and executed complex SQL queries to pull raw session and event data for Control and Experimental groups.
+1.  **Data Extraction (SQL):** Wrote and executed complex SQL queries to pull raw session and event data for Control and Experimental groups.   
 2.  **Metric Calculation:** Defined and calculated the primary (`begin_checkout / session`) and guardrail (`session with orders / session`) metrics.
 3.  **Statistical Testing:** Calculated statistical significance for the overall audience and key segments (Device, Continent, Channel).
 4.  **Segmented Analysis:** Utilized BI tools to drill down into localized issues, confirming significant performance drops in the Tablet and European segments.
 5.  **Conclusion & Next Steps:** Delivered a clear, data-backed recommendation to halt deployment and provided a strategy for future optimization.
 
 ## Access Code
-The full SQL query used for data extraction and metric calculation is available in the file: **[Insert SQL Filename, e.g., `AB_Test_Query.sql`]**
-The dashboard visualization link or screenshots are available here: **[Insert Dashboard Link/Screenshot file]**
+The full SQL query used for data extraction and metric calculation is available in the file: SQL-code
+The dashboard visualization link is available here: https://public.tableau.com/app/profile/vlada.semkova/viz/Book1_17321955529890/Dashboard1
