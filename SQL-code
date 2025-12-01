@@ -1,0 +1,147 @@
+with session_info as (
+  SELECT
+        s.date,
+        s.ga_session_id,
+        sp.device,
+        sp.country,
+        sp.continent,
+        sp.channel,
+        ab.test,
+        ab.test_group,
+  FROM `DA.ab_test`as ab
+  JOIN `DA.session` as s
+  ON s.ga_session_id = ab.ga_session_id
+  JOIN `DA.session_params`as sp
+  ON sp.ga_session_id = ab.ga_session_id
+), session_with_orders as (
+SELECT
+        session_info.date,
+        session_info.device,
+        session_info.country,
+        session_info.continent,
+        session_info.channel,
+        session_info.test,
+        session_info.test_group,
+        count(distinct o.ga_session_id) as session_with_orders
+FROM `DA.order` as o
+join session_info
+on o.ga_session_id = session_info.ga_session_id
+group by  session_info.date,
+        session_info.device,
+        session_info.country,
+        session_info.continent,
+        session_info.channel,
+        session_info.test,
+        session_info.test_group
+), event as (
+SELECT
+        session_info.date,
+        session_info.device,
+        session_info.country,
+        session_info.continent,
+        session_info.channel,
+        session_info.test,
+        session_info.test_group,
+        sp.event_name,
+        count(sp.ga_session_id) as event_cnt
+FROM `DA.event_params` sp
+join session_info
+on sp.ga_session_id = session_info.ga_session_id
+GROUP BY  session_info.date,
+        session_info.device,
+        session_info.country,
+        session_info.continent,
+        session_info.channel,
+        session_info.test,
+        session_info.test_group,
+        sp.event_name
+), session as (
+SELECT session_info.date,
+        session_info.device,
+        session_info.country,
+        session_info.continent,
+        session_info.channel,
+        session_info.test,
+        session_info.test_group,
+        count( distinct session_info.ga_session_id) as session_cnt
+FROM session_info
+GROUP BY session_info.date,
+        session_info.device,
+        session_info.country,
+        session_info.continent,
+        session_info.channel,
+        session_info.test,
+        session_info.test_group),
+account as (
+SELECT
+        session_info.date,
+        session_info.device,
+        session_info.country,
+        session_info.continent,
+        session_info.channel,
+        session_info.test,
+        session_info.test_group,
+     count(distinct acs.ga_session_id) as new_account_cnt
+from `DA.account_session` acs
+join session_info
+on session_info.ga_session_id = acs.ga_session_id
+group by
+        session_info.date,
+        session_info.device,
+        session_info.country,
+        session_info.continent,
+        session_info.channel,
+        session_info.test,
+        session_info.test_group)
+
+
+
+
+       
+select
+        session_with_orders.date,
+        session_with_orders.device,
+        session_with_orders.country,
+        session_with_orders.continent,
+        session_with_orders.channel,
+        session_with_orders.test,
+        session_with_orders.test_group,
+        "session_with_orders" as event_name,
+        session_with_orders.session_with_orders as value
+from session_with_orders
+union all
+SELECT event.date,
+        event.device,
+        event.country,
+        event.continent,
+        event.channel,
+        event.test,
+        event.test_group,
+        event_name,
+        event_cnt as value
+from event
+union all
+SELECT session.date,
+        session.device,
+        session.country,
+        session.continent,
+        session.channel,
+        session.test,
+        session.test_group,
+        "session" as event_name,
+       session_cnt as value
+FROM session
+union all
+SELECT
+        account.date,
+        account.device,
+        account.country,
+        account.continent,
+        account.channel,
+        account.test,
+        account.test_group,
+        "new_account" as event_name,
+        new_account_cnt as value
+from account
+
+
