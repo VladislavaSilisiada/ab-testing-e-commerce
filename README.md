@@ -1,5 +1,5 @@
 # ab-testing-e-commerce
-# 📈 E-commerce Feature Validation through A/B Testing: Button Redesign
+# E-commerce Feature Validation through A/B Testing: Button Redesign
 
 ## Project Goal
 The core objective of this project was to provide a rigorous statistical evaluation of an A/B test focused on implementing a **larger checkout button on the main page**. The primary goal was to increase the `begin_checkout` rate by 5% without negatively impacting `session with orders`.
@@ -26,4 +26,5 @@ The core objective of this project was to provide a rigorous statistical evaluat
 
 ## Access Code
 The full SQL query used for data extraction and metric calculation is available in the file: SQL-code
+
 The dashboard visualization link is available here: https://public.tableau.com/app/profile/vlada.semkova/viz/Book1_17321955529890/Dashboard1
